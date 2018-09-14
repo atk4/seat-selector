@@ -1,0 +1,29 @@
+{
+  "name": "atk4/seat-selector",
+  "description": "Add-on for ATK providing you with a seated ticket booking interface for Cinemas, Arenas and other Venues",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Romans Malinovskis",
+      "email": "romans@agiletoolkit.org"
+    }
+  ],
+  "require": {
+    "atk4/data": "^1.3.7"
+  },
+  "suggest": {
+    "atk4/ui": "^1.5.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.0",
+    "satooshi/php-coveralls": "^1.0",
+    "codeclimate/php-test-reporter": "*"
+  },
+  "autoload": {
+    "psr-4": {"atk4\\seat_selector\\":"src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"atk4\\seat_selector\\tests\\":"tests/"}
+  }
+}
