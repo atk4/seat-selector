@@ -1,6 +1,6 @@
-# venue-tickets
+# seat-picker
 
-If you are building a type of website for a cinema, theatre or arena, where it's important to allocate seats on the tickets, then this add-on should be able to do a heavy-lifting for you:
+If you are building a type of website for a cinema, theatre or arena, where it's important to allocate seats on the tickets. This add-on is designed to offer you a seat allocation widget:
 
 ``` php
 $seats = $app->add(new \atk4\venue_tickets\SeatSelector('venue.svg', 5));
@@ -25,14 +25,29 @@ Create the image using any imaging applicaiton that can output SVG. Open the fil
 
 Depending on how fancy your seat design is, the shape may be different.
 
-1. Add `class="seat"` to the shape.
-2. Add `"data-place="9B"` with the corresponding place label.
+1. Add `class="seat"` to the seat shapes.
+2. Add `"data-place="9B"` with to each seat.
+3. If you have a text-object corresponding to of seats to select, add `class="remaining"` to it.
 
-
+Store your SVG file anywhere. It will be embedded into your page directly.
 
 ## Model: Ticket
 
 The addon comes with a Ticket model, but you can use your own model too. Here are the requirements for the model:
 
-- `"status"`- column as a list of values: `reserved`, `unavailable` or `purchased`. You can add more statusses and they be applied to the seat objects as a class.
-- `"position"`- 
+- `"place"` - will contain the corresponding place.
+- `"status"`- (Optional) column as a list of values: `reserved`, `unavailable` or `purchased`. You can add more statusses and they be applied to the seat objects as a class.
+
+Initially the data-set for the Ticket model would be empty. SeatSelector will create 5 (or whichever number you specify to the constructor) new ticket records and will fill-in "place".
+
+It will also look a the existing ticket records and display them as "unavailable". If your model has a "status" field then the status will also be assigned to your SVG objects.
+
+I recommend you to also have a `reservation_timestamp` added to your ticket and automatically clear reservation status when it expires:
+
+``` php
+§model->addField(
+    'reservation_timestamp', 
+    ['type'=>'datetime', 'default'=>new \DateTime()]
+);
+```
+
