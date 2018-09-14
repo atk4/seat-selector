@@ -1,4 +1,4 @@
-# seat-picker
+# seat-selector - Cinema, Theatre and Arena seat allocation widget for ATK
 
 If you are building a type of website for a cinema, theatre or arena, where it's important to allocate seats on the tickets. This add-on is designed to offer you a seat allocation widget:
 
