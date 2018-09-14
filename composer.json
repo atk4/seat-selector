@@ -10,9 +10,8 @@
     }
   ],
   "require": {
-    "atk4/data": "^1.3.7"
-  },
-  "suggest": {
+
+    "atk4/data": "^1.3.7",
     "atk4/ui": "^1.5.8"
   },
   "require-dev": {
