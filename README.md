@@ -9,7 +9,7 @@ $seats->setModel($event->ref('Tickets'));
 
 This will display this widget for you (depending on your SVG):
 
-![seats-selection](/Users/rw/Sites/venue-tickets/docs/images/seats-selection.png)
+![seats-selection](docs/images/seats-selection.png)
 
 User would have to select up to 5 seats with the widget and confirm. The JavaScript part of this add-on will communicate with ATK View object on the server site to mark those seats as "reserved". 
 
