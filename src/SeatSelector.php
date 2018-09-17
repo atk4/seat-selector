@@ -1,6 +1,7 @@
 <?php
 namespace atk4\seat_selector;
 
+use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\ui\Callback;
 use atk4\ui\View;
@@ -54,6 +55,9 @@ class SeatSelector extends View {
                 // make sure nobody else got the ticket for those places yet.
                 // by trying to find tickets for selected places.
                 $model->tryLoadBy('place', $arg);
+                if ($model->loaded()) {
+                    throw new Exception(['Selected seats are not available', 'allocated_ticket'=>$model]);
+                }
 
                 // Next convert array of places into array of associative arrays
                 $data = [];
