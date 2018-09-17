@@ -2,6 +2,7 @@
   "name": "atk4/seat-selector",
   "description": "Add-on for ATK providing you with a seated ticket booking interface for Cinemas, Arenas and other Venues",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "license": "MIT",
   "authors": [
     {
