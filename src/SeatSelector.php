@@ -4,9 +4,14 @@ namespace atk4\seat_selector;
 use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\ui\Callback;
+use atk4\ui\Template;
 use atk4\ui\View;
 
 class SeatSelector extends View {
+
+    public $seatSelectorTemplate = 'seat-selector.html';
+
+    public $seatViewTemplate = '<div id="{$_id}" class="{$_class} atk-seat-svg">{$svg}</div>';
 
     /**
      * @var Callback
@@ -22,15 +27,27 @@ class SeatSelector extends View {
      * @throws \atk4\ui\Exception
      */
     function init() {
+        $this->defaultTemplate = dirname(__DIR__).'/template/'.$this->seatSelectorTemplate;
         parent::init();
 
-        $this->callback = $this->add('Callback');
+        $btn = $this->add(['Button', 'Clear Seat'], 'button');
 
+        if (!$this->seatView) {
+            $this->seatView = $this->add(['View', 'template' => new Template($this->seatViewTemplate)], 'venue');
+        }
 
-        // $this->js(true)->seatSelector($this->settings);
+        $svg = file_get_contents(dirname(__DIR__).'/svg/example1.svg');
+
+        $this->seatView->template->setHTML('svg', $svg);
+        $btn->on('click', $this->seatView->js()->atkSeatSelector('clearSeats'));
+
+        $this->app->requireCSS('/vendor/atk4/seat-selector/public/seat-selector.css');
+        $this->app->requireJS('/vendor/atk4/seat-selector/public/seat-selector.js');
+
     }
 
     function renderView() {
+        $this->seatView->js(true)->atkSeatSelector(['qty' => 2, 'takenSeats' => ['S4', 'S5']]);
         return parent::renderView();
     }
 

@@ -1,0 +1,12 @@
+.reserved {
+    fill: red;
+}
+
+.seat:not(.reserved):hover{
+    fill: green;
+    cursor: pointer;
+}
+
+.selected {
+    fill: green;
+}
