@@ -23,7 +23,7 @@ class SeatWizard extends View
 
         $this->wizard = $this->add('Wizard');
 
-        $this->wizard->addStep(['Select Event', 'icon'=>'calendar outline', 'description'=>'Select an event.'], function ($p) {
+        $this->wizard->addStep(['Event', 'icon'=>'calendar outline', 'description'=>'Select an event.'], function ($p) {
 
             $f = $p->add('Form');
 
@@ -37,7 +37,7 @@ class SeatWizard extends View
             });
         });
 
-        $this->wizard->addStep(['Select Showtime', 'description'=>'Select showtime for the event.', 'icon'=>'calendar'], function ($p) {
+        $this->wizard->addStep(['Showtime', 'description'=>'Select showtime for the event.', 'icon'=>'calendar'], function ($p) {
 
             $m = (new Event($p->app->db))->load($p->recall('event'))->ref("Showtimes");
             $m->addExpression('name', ' DATE_FORMAT([date_time], "%M %d, %Y @ %H:%I")');
@@ -50,18 +50,26 @@ class SeatWizard extends View
             $f->addField('qty', ['inputType' => 'number']);
             $f->onSubmit(function ($f) use ($p) {
                 $p->memorize('showtime', $f->model['showtime']);
-                $p->memorize('qty', $f->model['showtime']);
+                $p->memorize('qty', $f->model['qty']);
 
                 return $p->jsNext();
             });
         });
 
-        $this->wizard->addStep(['Select Seats', 'description'=>'Select seats for the event.', 'icon'=>'calendar'], function ($p) {
+        $this->wizard->addStep(['Seats', 'description'=>'Select seats for the event.', 'icon'=>'calendar'], function ($p) {
 
             $m = (new Event($p->app->db))->load($p->recall('event'))->ref("Showtimes")->load($p->recall('showtime'))->ref('Tickets');
 
             $seat = $p->add([new SeatSelector(), 'venue' => '/var/www/html/public/example1.svg', 'qty' => $p->recall('qty')]);
             $seat->setModel($m);
+
+            $p->buttonNext->on('click', [$seat->jsConfirmSeat(), $p->jsNext()]);
+
+        });
+
+
+        $this->wizard->addStep(['Thank you'], function ($p) {
+            $p->add(['Header', 'Thank you. Have a good show', 'huge centered']);
         });
     }
 }

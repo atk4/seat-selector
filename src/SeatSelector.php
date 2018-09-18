@@ -67,7 +67,7 @@ class SeatSelector extends View {
      *
      * @var bool
      */
-    public $hasConfirmBtn = true;
+    public $hasConfirmBtn = false;
 
     public $btnClearLabel = 'Clear seats';
     public $btnConfirmLabel = 'Confirm seats';

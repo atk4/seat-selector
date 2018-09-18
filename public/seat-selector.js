@@ -10,7 +10,7 @@ function SeatSelector (element, options) {
   this.settings = options;
   this.seats = null;
   this.takenSeats = this.settings.takenSeats;
-  this.qty = this.settings.qty;
+  this.qty = parseInt(this.settings.qty);
   this.qtySelected = 0;
   this.selectedSeats = [];
 
