@@ -7,6 +7,10 @@
     cursor: pointer;
 }
 
+.seat.selected:hover{
+    fill: gray;
+}
+
 .selected {
     fill: green;
 }

@@ -9,9 +9,19 @@ use atk4\ui\View;
 
 class SeatSelector extends View {
 
+    /**
+     * Template to use with this view.
+     * @var string
+     */
     public $seatSelectorTemplate = 'seat-selector.html';
 
-    public $seatViewTemplate = '<div id="{$_id}" class="{$_class} atk-seat-svg">{$svg}</div>';
+    /**
+     * The seat view to embed svg file.
+     * @var null
+     */
+    public $seatView = null;
+
+    public $seatViewTemplate = null;
 
     /**
      * @var Callback
@@ -19,36 +29,109 @@ class SeatSelector extends View {
     public $callback;
 
     /**
+     * SeatSelector jQuery plugin setup.
+     * see seat-selector.js file for all settings.
+     *
      * @var array JavaScript settings
      */
     public $settings = [];
 
     /**
+     * @var null Venue svg file indluding full path.
+     */
+    public $venue = null;
+
+    /**
+     * @var int qty allow to buy during seat selection,
+     */
+    public $qty = 1;
+
+    /**
+     * An array of already selected seats.
+     *
+     * @var array
+     */
+    public $takenSeats = [];
+
+    /**
+     * Notify user about seat error.
+     *
+     * @var string
+     */
+    public $seatErrorMsg = 'Some of your selected seat are no longer available. Please select new seats.';
+
+    /**
+     * Add confirm button or not.
+     * If not, you need to handle seat confirmation action
+     * via jsConfirmSeat method.
+     *
+     * @var bool
+     */
+    public $hasConfirmBtn = true;
+
+    public $btnClearLabel = 'Clear seats';
+    public $btnConfirmLabel = 'Confirm seats';
+
+    /**
      * @throws \atk4\ui\Exception
      */
-    function init() {
+    public function init() {
         $this->defaultTemplate = dirname(__DIR__).'/template/'.$this->seatSelectorTemplate;
         parent::init();
 
-        $btn = $this->add(['Button', 'Clear Seat'], 'button');
+        $this->callback = $this->add('jsCallback');
 
         if (!$this->seatView) {
+            if (!$this->seatViewTemplate) {
+                $this->seatViewTemplate = '<div id="{$_id}" class="{$_class} ui basic segment atk-seat-svg">{$svg}</div>';
+            }
             $this->seatView = $this->add(['View', 'template' => new Template($this->seatViewTemplate)], 'venue');
         }
 
-        $svg = file_get_contents(dirname(__DIR__).'/svg/example1.svg');
+        if (!$this->venue) {
+            throw new \atk4\ui\Exception('You need to supply a venue svg file.');
+        }
 
+        //setup svg.
+        if (file_exists($this->venue)) {
+            $svg = file_get_contents($this->venue);
+        } else {
+            throw new \atk4\ui\Exception('Unable to open venue file: '. $this->venue);
+        }
         $this->seatView->template->setHTML('svg', $svg);
-        $btn->on('click', $this->seatView->js()->atkSeatSelector('clearSeats'));
 
+        //setup button.
+        $bar = $this->add(['ui' => 'horizontal buttons'], 'buttons');
+        $clr = $bar->add(['Button', $this->btnClearLabel]);
+        $clr->on('click', $this->seatView->js()->atkSeatSelector('clearSeats'));
+
+        if ($this->hasConfirmBtn) {
+            $conf =  $bar->add(['Button', $this->btnConfirmLabel]);
+            $conf->on('click', $this->jsConfirmSeat());
+        }
+
+        //todo change for cdn file.
         $this->app->requireCSS('/vendor/atk4/seat-selector/public/seat-selector.css');
         $this->app->requireJS('/vendor/atk4/seat-selector/public/seat-selector.js');
-
     }
 
-    function renderView() {
-        $this->seatView->js(true)->atkSeatSelector(['qty' => 2, 'takenSeats' => ['S4', 'S5']]);
+    public function renderView() {
+        $this->seatView->js(true)->atkSeatSelector(array_merge([
+            'qty'        => $this->qty,
+            'takenSeats' => $this->takenSeats,
+            'uri'        => $this->callback->getJSURL(),
+        ], $this->settings));
+
         return parent::renderView();
+    }
+
+    /**
+     *  Return js confirm action.
+     *  This action will trigger callback for seat reservation.
+     */
+    public function jsConfirmSeat()
+    {
+        return $this->seatView->js()->atkSeatSelector('confirmSeats');
     }
 
     /**
@@ -58,39 +141,52 @@ class SeatSelector extends View {
      * @param Model $ticket
      * @return Model
      */
-    function setModel(Model $ticket) {
+    public function setModel(Model $ticket) {
         $model = parent::setModel($ticket);
 
-        $this->callback->set(function($arg) use($model) {
+        $this->takenSeats = $model->getTakenSeats();
+
+        $this->callback->set(function($j, $seats) use($model) {
 
             // Callback will be executed when the seats are locked in
             // and confirmed by the user. We want the whole operation
             // atomic.
-
-            $model->persistence->atomic(function() use($model, $arg) {
+            $seats = explode(',', $seats);
+            $error = $model->persistence->atomic(function() use($model, $j, $seats) {
 
                 // make sure nobody else got the ticket for those places yet.
                 // by trying to find tickets for selected places.
-                $model->tryLoadBy('place', $arg);
-                if ($model->loaded()) {
-                    throw new Exception(['Selected seats are not available', 'allocated_ticket'=>$model]);
+                $reserved = [];
+                foreach ($seats as $seat) {
+                    $model->tryLoadBy('seat', $seat);
+                    if ($model->loaded()) {
+                        $reserved[] = $seat;
+                    }
+                }
+
+                //abort if some seat are selected by someone else.
+                if (!empty($reserved)) {
+                    return $reserved;
                 }
 
                 // Next convert array of places into array of associative arrays
                 $data = [];
-                foreach($arg as $place) {
-                    $data[] = ['palce'=>$place];
+                foreach($seats as $seat) {
+                    $data[] = ['seat' => $seat, 'status' => 'reserved'];
                 }
 
                 // Now import data. This should create tickets (in a draft state)
                 $model->import($data);
+
+                return false;
             });
 
+            if (is_array($error) && !empty($error) ) {
+                return $this->seatView->js()->atkSeatSelector('seatError', [$error, $this->seatErrorMsg]);
+            }
 
-        });
-
+        }, ['seats' => 'seats']);
 
         return $model;
     }
-
 }

@@ -6,6 +6,8 @@ use \atk4\data\Model;
 
 class Venue extends Model {
 
+    public $table = 'venue';
+
     function init()
     {
         parent::init();
@@ -13,6 +15,6 @@ class Venue extends Model {
         // Name of the venue or location
         $this->addField('name');
 
-        $this->hasMany('Showtimes', new Showtime());
+        $this->hasMany('Events', new Event());
     }
 }
