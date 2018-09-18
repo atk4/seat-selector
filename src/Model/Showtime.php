@@ -21,5 +21,4 @@ class Showtime extends Model {
 
         $this->hasMany('Tickets', new Ticket());
     }
-
 }

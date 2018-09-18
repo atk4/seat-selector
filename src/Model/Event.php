@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by abelair.
- * Date: 2018-09-18
- * Time: 9:16 AM
- */
 
 namespace atk4\seat_selector\Model;
 

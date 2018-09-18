@@ -35,5 +35,4 @@ class Ticket extends Model {
         }
         return $seats;
     }
-
 }
