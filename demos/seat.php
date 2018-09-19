@@ -8,6 +8,6 @@ $app->add([
               new \atk4\seat_selector\SeatWizard(),
               'seatSelector' => $app->factory([
                                                   new \atk4\seat_selector\SeatSelector(),
-                                                  'venue' => dirname(__DIR__).'/public/example1.svg'
+                                                  'venue' => dirname(__DIR__).'/public/theater.svg'
                                               ])
           ]);
