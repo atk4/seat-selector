@@ -4,6 +4,7 @@ namespace atk4\seat_selector;
 
 use atk4\seat_selector\Model\Event;
 use atk4\seat_selector\Model\Venue;
+use atk4\ui\Exception;
 use atk4\ui\FormField\AutoComplete;
 use atk4\ui\jsExpression;
 use atk4\ui\jsFunction;
@@ -15,11 +16,20 @@ class SeatWizard extends View
 {
     public $wizard = null;
 
-    public $venue = null;
+    /**
+     * The SeatSelector object associate with this wizard.
+     *
+     * @var null SeatSelector
+     */
+    public $seatSelector = null;
 
     public function init()
     {
         parent::init();
+
+        if (!$this->seatSelector) {
+            throw new Exception('You need to supply SeatSelector object to this wizard');
+        }
 
         $this->wizard = $this->add('Wizard');
 
@@ -60,7 +70,8 @@ class SeatWizard extends View
 
             $m = (new Event($p->app->db))->load($p->recall('event'))->ref("Showtimes")->load($p->recall('showtime'))->ref('Tickets');
 
-            $seat = $p->add([new SeatSelector(), 'venue' => $this->venue, 'qty' => $p->recall('qty')]);
+            $seat = $p->add($this->seatSelector);
+            $seat->qty = $p->recall('qty');
             $seat->setModel($m);
 
             $p->buttonNext->on('click', $seat->jsConfirmSeat(new jsFunction([$p->jsNext()])));
