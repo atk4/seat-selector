@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="500px" height="500px" viewBox="0 0 1008 1008">
-<rect id="stage" x="321.833" y="148.208" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="369.792" height="120.833"/>
-<circle class="seat" data-place="S0" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="204.011" cy="348.729" r="11.979"/>
-<circle class="seat" data-place="S1" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="238.499" cy="348.729" r="11.979"/>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="scree.width" height="screen.height" viewBox="0 0 1008 1008">
+<!--<xsl:variable name="x" select={x} /> -->
+<circle class="seat" data-place="S0" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx={$x} cy='348.729' r="11.979"/>
+<!--<circle class="seat" data-place="S1" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="238.499" cy="348.729" r="11.979"/>
 <circle class="seat" data-place="S2" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="272.988" cy="348.729" r="11.979"/>
 <circle class="seat" data-place="S3" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="307.476" cy="348.729" r="11.979"/>
 <circle class="seat" data-place="S4" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="341.964" cy="348.729" r="11.979"/>
@@ -129,4 +129,5 @@
 <circle class="seat" data-place="S66" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="727.969" cy="607.58" r="11.979"/>
 <circle class="seat" data-place="S65" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="762.458" cy="607.58" r="11.979"/>
 <circle class="seat" data-place="S64" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="796.946" cy="607.58" r="11.979"/>
+-->
 </svg>
