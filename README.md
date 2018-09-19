@@ -3,13 +3,13 @@
 If you are building a type of website for a cinema, theatre or arena, where it's important to allocate seats on the tickets. This add-on is designed to offer you a seat allocation widget:
 
 ``` php
-$seats = $app->add(new \atk4\venue_tickets\SeatSelector('venue.svg', 5));
+$seats = $app->add([new \atk4\venue_tickets\SeatSelector(), 'venue' => 'path/to/svg/file.svg, qty => 4]);
 $seats->setModel($event->ref('Tickets'));
 ```
 
 This will display this widget for you (depending on your SVG):
 
-![seats-selection](docs/images/seats-selection.png)
+![seats-selection](docs/images/seats-demo.png)
 
 User would have to select up to 5 seats with the widget and confirm. The JavaScript part of this add-on will communicate with ATK View object on the server site to mark those seats as "reserved". 
 
@@ -20,7 +20,8 @@ Next your application takes over, confirms user payment, prints tickets - it's u
 Create the image using any imaging applicaiton that can output SVG. Open the file and find a corresponding object(s) for the seats:
 
 ``` svg
-<circle id="seat_12_" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" cx="307.476" cy="385.708" r="11.979"/>
+<path class="seat" data-place="S1" fill="#FFFFFF" stroke="#000000" stroke-linejoin="bevel" stroke-miterlimit="10" d="M128.829,281.623
+    l2.764-10.522l10.684,1.777l-0.87,11.343c0,0-3.288,1.659-7.068,0.853C130.748,284.306,128.829,281.623,128.829,281.623z"/>
 ```
 
 Depending on how fancy your seat design is, the shape may be different.
@@ -35,7 +36,7 @@ Store your SVG file anywhere. It will be embedded into your page directly.
 
 The addon comes with a Ticket model, but you can use your own model too. Here are the requirements for the model:
 
-- `"place"` - will contain the corresponding place.
+- `"seat"` - will contain the corresponding place.
 - `"status"`- (Optional) column as a list of values: `reserved`, `unavailable` or `purchased`. You can add more statusses and they be applied to the seat objects as a class.
 
 Initially the data-set for the Ticket model would be empty. SeatSelector will create 5 (or whichever number you specify to the constructor) new ticket records and will fill-in "place".
