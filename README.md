@@ -3,7 +3,7 @@
 If you are building a type of website for a cinema, theatre or arena, where it's important to allocate seats on the tickets. This add-on is designed to offer you a seat allocation widget:
 
 ``` php
-$seats = $app->add([new \atk4\venue_tickets\SeatSelector(), 'venue' => 'path/to/svg/file.svg, qty => 4]);
+$seats = $app->add([new \atk4\venue_tickets\SeatSelector(), 'venue' => 'path/to/svg/file.svg, qty => 5]);
 $seats->setModel($event->ref('Tickets'));
 ```
 
