@@ -16,7 +16,6 @@ class Showtime extends Model {
         // Where does this showtime take place
         $this->hasOne('event_id', new Event());
 
-
         $this->addField('date_time', ['type'=>'datetime', 'required'=>true]);
 
         $this->hasMany('Tickets', new Ticket());

@@ -6,6 +6,7 @@ use atk4\seat_selector\Model\Event;
 use atk4\seat_selector\Model\Venue;
 use atk4\ui\FormField\AutoComplete;
 use atk4\ui\jsExpression;
+use atk4\ui\jsFunction;
 use atk4\ui\jsReload;
 use atk4\ui\View;
 use atk4\ui\Wizard;
@@ -14,7 +15,6 @@ class SeatWizard extends View
 {
     public $wizard = null;
 
-    public $qty = 1;
     public $venue = null;
 
     public function init()
@@ -60,16 +60,16 @@ class SeatWizard extends View
 
             $m = (new Event($p->app->db))->load($p->recall('event'))->ref("Showtimes")->load($p->recall('showtime'))->ref('Tickets');
 
-            $seat = $p->add([new SeatSelector(), 'venue' => '/var/www/html/public/example1.svg', 'qty' => $p->recall('qty')]);
+            $seat = $p->add([new SeatSelector(), 'venue' => $this->venue, 'qty' => $p->recall('qty')]);
             $seat->setModel($m);
 
-            $p->buttonNext->on('click', [$seat->jsConfirmSeat(), $p->jsNext()]);
-
+            $p->buttonNext->on('click', $seat->jsConfirmSeat(new jsFunction([$p->jsNext()])));
         });
 
 
         $this->wizard->addStep(['Thank you'], function ($p) {
             $p->add(['Header', 'Thank you. Have a good show', 'huge centered']);
+            $p->buttonPrev->destroy();
         });
     }
 }

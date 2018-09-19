@@ -128,10 +128,16 @@ class SeatSelector extends View {
     /**
      *  Return js confirm action.
      *  This action will trigger callback for seat reservation.
+     *  if a jsFunction is set, the function will execute after seat are confirm.
+     *  without any error.
+     *
+     * @param null $cb jsFunction to execute after seat are confirm.
+     *
+     * @return mixed
      */
-    public function jsConfirmSeat()
+    public function jsConfirmSeat($cb = null)
     {
-        return $this->seatView->js()->atkSeatSelector('confirmSeats');
+        return $this->seatView->js()->atkSeatSelector('confirmSeats', $cb);
     }
 
     /**
@@ -182,7 +188,7 @@ class SeatSelector extends View {
             });
 
             if (is_array($error) && !empty($error) ) {
-                return $this->seatView->js()->atkSeatSelector('seatError', [$error, $this->seatErrorMsg]);
+                $this->app->terminate(json_encode(['success' => true, 'error' => true, 'seats'=> $error, 'message' => $this->seatErrorMsg, 'atkjs' => '']));
             }
 
         }, ['seats' => 'seats']);

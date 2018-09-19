@@ -41,14 +41,24 @@ SeatSelector.prototype.clearSeats = function() {
 /**
  * Confirm seat selection.
  * Will execute callback function and return selected seat.
+ *
+ * @param cb // A callback function to execute after seat are confirmed.
  */
-SeatSelector.prototype.confirmSeats = function() {
+SeatSelector.prototype.confirmSeats = function(cb) {
+  var that = this;
   if (this.selectedSeats.length === this.qty) {
     this.$el.api({
       on: 'now',
       url: this.settings.uri,
       data: {seats: this.selectedSeats.toString()},
       method: 'POST',
+      onComplete: function(resp) {
+        if (resp.error) {
+          that.seatError([resp.seats, resp.message]);
+        } else if (cb !== null) {
+          cb();
+        }
+      }
     });
   } else {
     this.$el.atkNotify({
