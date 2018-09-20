@@ -34,7 +34,7 @@ SeatSelector.prototype.call = function(fn, args) {
 SeatSelector.prototype.clearSeats = function() {
   this.qtySelected = 0;
   this.selectedSeats = [];
-  $('.selected').toggleClass('selected');
+  jQuery('.selected').toggleClass('selected');
 
 }
 
@@ -79,7 +79,7 @@ SeatSelector.prototype.confirmSeats = function(cb) {
 SeatSelector.prototype.seatError = function(args) {
   var that = this;
   args[0].forEach(function (seat){
-    $('[data-'+that.settings.dataAttr+'="'+seat+'"]').removeClass('selected').addClass('reserved');
+    jQuery('[data-'+that.settings.dataAttr+'="'+seat+'"]').removeClass('selected').addClass('reserved');
     var index = that.selectedSeats.indexOf(seat);
     if (index > -1) {
       that.selectedSeats.splice(index, 1);
@@ -107,16 +107,16 @@ SeatSelector.prototype.setSeatHandler = function() {
   this.seats = this.getAvailableSeats();
 
   this.seats.on('click', function(){
-    if (that.qtySelected < that.qty && !$(this).hasClass('selected')) {
+    if (that.qtySelected < that.qty && !jQuery(this).hasClass('selected')) {
       //user adding a seat.
-      $(this).toggleClass('selected');
-      that.selectedSeats.push(($(this).data(that.settings.dataAttr)));
+      jQuery(this).toggleClass('selected');
+      that.selectedSeats.push((jQuery(this).data(that.settings.dataAttr)));
       that.qtySelected++;
     } else if ($(this).hasClass('selected')) {
       //user removing a seat.
-      $(this).toggleClass('selected');
+      jQuery(this).toggleClass('selected');
       that.qtySelected--;
-      var index = that.selectedSeats.indexOf($(this).data(that.settings.dataAttr));
+      var index = that.selectedSeats.indexOf(jQuery(this).data(that.settings.dataAttr));
       if (index > -1) {
         that.selectedSeats.splice(index, 1);
       }
@@ -147,10 +147,14 @@ SeatSelector.prototype.main = function() {
   var that = this;
 
   this.takenSeats.forEach(function(seat) {
-    $('[data-'+that.settings.dataAttr+'="'+seat+'"]').toggleClass('reserved');
+    jQuery('[data-'+that.settings.dataAttr+'="'+seat+'"]').toggleClass('reserved');
   })
 
   this.setSeatHandler();
+
+  if (this.settings.zoomable) {
+    svgPanZoom(this.settings.zoomable, this.settings.zoomableOptions);
+  }
 }
 
 /**
@@ -164,6 +168,15 @@ SeatSelector.DEFAULTS = {
   qty: 0,
   confirmErrorMsg: 'Please select all your tickets prior to confirm your seat.',
   maxQtyErrorMsg: 'All of your seats are already select.',
+  zoomable: null,
+  zoomableOptions: {
+    zoomEnabled: true,
+    controlIconsEnabled: true,
+    fit: true,
+    center: true,
+    minZoom: 1,
+    maxZoom: 10,
+  }
 }
 
 atk.registerPlugin('SeatSelector', SeatSelector);

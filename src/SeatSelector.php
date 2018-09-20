@@ -116,6 +116,19 @@ class SeatSelector extends View {
     }
 
     public function renderView() {
+
+        /**
+         * SVG can be zoomable by setting the zoomable property in plugin settings.
+         * This property should correspond you your svg element selector. ex: #theater for a SVG element with id="theater"
+         *
+         * Since this add-ons use sgv-pan-zoom you may also supply svg-pan-zoom options via
+         * $this->settings['zoomableOptions']
+         * for a list of options, please refer to: https://github.com/ariutta/svg-pan-zoom
+         */
+        if (isset($this->settings['zoomable']) && !empty($this->settings['zoomable'])) {
+            $this->app->requireJS('https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js');
+        }
+
         $this->seatView->js(true)->atkSeatSelector(array_merge([
             'qty'        => $this->qty,
             'takenSeats' => $this->takenSeats,

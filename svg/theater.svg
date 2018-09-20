@@ -1,18 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="500px"
-	 height="500px" viewBox="0 0 1008 1008" enable-background="new 0 0 1008 1008" xml:space="preserve">
-<g class="seat" data-place="Layer2" display="none">
-	<g class="seat" data-place="EDB3yH1" display="inline">
-		
-			<image overflow="visible" width="825" height="563" class="seat" data-place="EDB3yH2" xlink:href="D71DF7E1.jpg"  transform="matrix(1 0 0 1 91.6235 185.083)">
-		</image>
-	</g>
-</g>
-<g class="seat" data-place="Layer4">
+<svg id="theater" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/2000/svg" viewBox="0 0 1008 1008"
+	 x="0" y="0" width="500" height="500" >
+<g fill="none">
 	<g>
 		<g>
 			<g>
-				<path class="seat" data-place="S" fill="#FFFFFF" stroke="#000000" stroke-linejoin="bevel" stroke-miterlimit="10" d="M128.829,281.623
+				<path class="seat" data-place="S0" fill="#FFFFFF" stroke="#000000" stroke-linejoin="bevel" stroke-miterlimit="10" d="M128.829,281.623
 					l2.764-10.522l10.684,1.777l-0.87,11.343c0,0-3.288,1.659-7.068,0.853C130.748,284.306,128.829,281.623,128.829,281.623z"/>
 				<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M142.943,284.137c0,0-4.439,2.48-8.22,1.676
 					c-3.924-0.839-7.151-5.753-6.331-4.601"/>
@@ -5388,18 +5380,10 @@
 			</g>
 		</g>
 	</g>
-</g>
-<g class="seat" data-place="Layer1">
-	<rect x="185.333" y="86.844" fill="#717375" width="641.333" height="8.156"/>
-	
-		<rect x="186.166" y="95.838" fill="#CDCFD0" stroke="#000000" stroke-width="1.1233" stroke-miterlimit="10" width="639.834" height="88.167"/>
-</g>
-<g class="seat" data-place="Layer3" display="none">
-	<g display="inline">
-		<path fill="#FFFFFF" stroke="#000000" stroke-linejoin="bevel" stroke-miterlimit="10" d="M-190.48,279.628l1.143-10.818
-			l10.831,0.143l0.853,11.344c0,0-2.999,2.137-6.858,1.91C-188.177,281.992-190.48,279.628-190.48,279.628z"/>
-		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M-176.147,279.981c0,0-4.014,3.124-7.873,2.898
-			c-4.005-0.236-7.938-4.604-6.953-3.592"/>
+	<g class="">
+		<rect x="185.333" y="86.844" fill="#717375" width="641.333" height="8.156"/>
+
+			<rect x="186.166" y="95.838" fill="#CDCFD0" stroke="#000000" stroke-width="1.1233" stroke-miterlimit="10" width="639.834" height="88.167"/>
 	</g>
 </g>
 </svg>
